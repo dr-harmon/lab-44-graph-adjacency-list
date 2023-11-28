@@ -108,11 +108,23 @@ public:
     class Vertex {
     public:
         bool isAdjacentTo(const Vertex& v) const {
-            // TODO
+            for (int edgeID : g.adjacencyList.at(id)) {
+                Edge edge = g.edgeMap.at(edgeID);
+                if ((id == edge.startVertex && v.id == edge.endVertex) ||
+                    (id == edge.endVertex && v.id == edge.startVertex)) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         EdgeList incidentEdges() const {
-            // TODO
+            EdgeMap incidentEdges;
+            for (int edgeID : g.adjacencyList.at(id)) {
+                Edge edge = g.edgeMap.at(edgeID);
+                incidentEdges.emplace(edgeID, edge);
+            }
+            return EdgeList(incidentEdges);
         }
 
         const VertexElement& operator*() const {
